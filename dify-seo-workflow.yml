@@ -1,0 +1,859 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: workflow
+  name: SEO
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/siliconflow:0.0.57@5805804fa59515fc5d02d12b6fbc0fc521791a053059fb04f77be3829b484ee2
+    version: null
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 50
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1783407247870-source-1783407855917-target
+      selected: false
+      source: '1783407247870'
+      sourceHandle: source
+      target: '1783407855917'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 1783407855917-source-1783408093453-target
+      selected: false
+      source: '1783407855917'
+      sourceHandle: source
+      target: '1783408093453'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: parameter-extractor
+      id: 1783408093453-source-1783477179135-target
+      source: '1783408093453'
+      sourceHandle: source
+      target: '1783477179135'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: llm
+      id: 1783477179135-source-1783408775089-target
+      source: '1783477179135'
+      sourceHandle: source
+      target: '1783408775089'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1783408775089-source-1783477654527-target
+      source: '1783408775089'
+      sourceHandle: source
+      target: '1783477654527'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 用户输入
+        type: start
+        variables:
+        - default: ''
+          hint: ''
+          label: 关键词 / Semrush结果
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: Keywords
+        - default: ''
+          hint: ''
+          label: 热点方向
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: topic_direction
+        - default: ''
+          hint: ''
+          label: 对标文章
+          options: []
+          placeholder: ''
+          required: true
+          type: paragraph
+          variable: Competitor_Article
+        - default: ''
+          hint: ''
+          label: 补充要求
+          options: []
+          placeholder: ''
+          required: false
+          type: text-input
+          variable: Additional_Notes
+      height: 188
+      id: '1783407247870'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: Pro/MiniMaxAI/MiniMax-M2.5
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: e2e2b24d-7768-4c14-a269-64f92691c8bd
+          role: system
+          text: 'You are a helpful SEO assistant.
+
+
+            Analyze this input:
+
+
+            Keywords:
+
+            {{#1783407247870.Keywords#}}
+
+
+            Topic:
+
+            {{#1783407247870.topic_direction#}}
+
+
+            Return a short SEO analysis.
+
+
+            Only output:
+
+            - Search intent
+
+            - Content gap
+
+            - Recommendation
+
+
+            Maximum 300 words.
+
+
+            # FINAL SELECTION FORMAT
+
+
+            At the end of your response, you MUST provide one final selected topic
+            in this exact format:
+
+
+            SELECTED_TOPIC:
+
+            <one clear blog topic title>
+
+
+            SELECTED_PRIMARY_KEYWORD:
+
+            <primary keyword>
+
+
+            SELECTED_ANGLE:
+
+            <one sentence explaining the article angle>'
+        - id: c2118061-4820-4dad-8b72-c27d53ca0a58
+          role: user
+          text: '{{#1783407247870.Keywords#}}
+
+            {{#1783407247870.topic_direction#}}
+
+            {{#1783407247870.Competitor_Article#}}
+
+            {{#1783407247870.Additional_Notes#}}
+
+            /'
+        selected: false
+        title: P0 | Research Agent
+        type: llm
+        vision:
+          enabled: false
+      height: 89
+      id: '1783407855917'
+      position:
+        x: 383
+        y: 282
+      positionAbsolute:
+        x: 383
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V4-Pro
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: 4998cfc7-c897-4b0a-9fca-d912a3fa9277
+          role: system
+          text: '# ROLE
+
+
+            You are a Senior SEO Content Strategist specializing in AI developer tools.
+
+
+            Your responsibility is to decide the best content opportunity based on
+            the SEO research report.
+
+
+            You are NOT a writer.
+
+
+            You are NOT allowed to write the full article.
+
+
+            You are NOT allowed to create the final outline.
+
+
+            Your job is to make strategic content decisions.
+
+
+
+            # OBJECTIVE
+
+
+            Analyze the Research Report and recommend the highest-value SEO topics.
+
+
+            Your goal is to identify topics that can:
+
+
+            - attract organic traffic
+
+            - build topical authority
+
+            - outperform competitors
+
+            - create business value
+
+
+
+            # EVALUATION CRITERIA
+
+
+            Evaluate each topic based on:
+
+
+            1. Search demand
+
+            2. Keyword opportunity
+
+            3. Search intent
+
+            4. Competition level
+
+            5. Content gap
+
+            6. AI trend freshness
+
+            7. Backlink potential
+
+            8. Business relevance
+
+
+
+            # THINKING STYLE
+
+
+            Think like an SEO Director.
+
+
+            Do not simply generate titles.
+
+
+            Make strategic recommendations.
+
+
+            # OUTPUT FORMAT
+
+
+            Generate 5-8 SEO topic recommendations.
+
+
+            For each topic include:
+
+
+            ## Topic Title
+
+
+            ## Primary Keyword
+
+
+            ## Search Intent
+
+
+            ## Traffic Potential
+
+
+            ## Competition Level
+
+
+            ## Content Gap
+
+
+            ## Why This Topic Wins
+
+
+            ## How To Beat Competitors
+
+
+
+            Finally provide:
+
+
+            # Recommended Topic
+
+
+            Select ONE best topic and explain why it should be prioritized.'
+        - id: b2207d37-8af6-4af1-8d06-eb21e4bdd0ca
+          role: user
+          text: '## SEO Research Report
+
+
+            {{#1783407855917.text#}}
+
+
+
+            ## Original Requirements
+
+
+            Keywords:
+
+            {{#1783407247870.Keywords#}}
+
+
+
+            Topic Direction:
+
+            {{#1783407247870.topic_direction#}}
+
+            {{#1783407247870.Additional_Notes#}}'
+        selected: false
+        title: P1 | Topic Strategy Agent
+        type: llm
+        vision:
+          enabled: false
+      height: 89
+      id: '1783408093453'
+      position:
+        x: 686
+        y: 282
+      positionAbsolute:
+        x: 686
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.3
+          mode: chat
+          name: Pro/deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: 1586ea04-8881-4ff7-908a-9795aa37fd42
+          role: system
+          text: '# ROLE
+
+
+            You are an expert SEO content strategist.
+
+
+            Your responsibility is to create a search-engine-optimized article outline
+            based on selected topics and research data.
+
+
+            You are NOT a writer.
+
+
+            You do NOT write the full article.
+
+
+            You only create the strategic blueprint for writers.
+
+
+
+            # OBJECTIVE
+
+
+            Create an SEO optimized article structure that can rank on Google and
+            outperform competitors.
+
+
+
+            # REQUIREMENTS
+
+
+            The output must include:
+
+
+            1. SEO Title
+
+
+            Requirements:
+
+            - Include primary keyword naturally.
+
+            - Make the title attractive and clickable.
+
+            - Match search intent.
+
+
+
+            2. Meta Description
+
+
+            Requirements:
+
+            - Length must be between 120-150 characters.
+
+            - Include primary keyword naturally.
+
+            - Improve CTR.
+
+
+
+            3. Keyword Strategy
+
+
+            Include:
+
+            - Primary keyword.
+
+            - Secondary keywords.
+
+            - Long-tail keyword opportunities.
+
+
+
+            4. Article Outline
+
+
+            Create:
+
+
+            H1
+
+
+            H2 sections
+
+
+            H3 subsections
+
+
+            For every section:
+
+            - Explain the search purpose.
+
+            - Include recommended keywords.
+
+            - Identify content angle.
+
+
+
+            5. FAQ
+
+
+            Generate FAQ questions based on:
+
+            - Search queries.
+
+            - Long-tail keywords.
+
+            - User concerns.
+
+
+
+            6. CTA
+
+
+            Recommend:
+
+            - Mid-content CTA.
+
+            - End-of-article CTA.
+
+
+
+            # SEO PRINCIPLES
+
+
+            Prioritize:
+
+
+            - Search intent satisfaction.
+
+            - Topical authority.
+
+            - Keyword coverage.
+
+            - Content depth.
+
+            - Competitor gap opportunities.
+
+
+
+            Avoid:
+
+
+            - Keyword stuffing.
+
+            - Generic sections.
+
+            - Copying competitor structure.
+
+
+
+            # OUTPUT FORMAT
+
+
+            Return a complete SEO outline report.
+
+
+            Use this structure:
+
+
+            1. SEO Title
+
+            2. Meta Description
+
+            3. Primary Keyword
+
+            4. Secondary Keywords
+
+            5. Search Intent
+
+            6. Article Outline
+
+            7. FAQ
+
+            8. CTA Recommendation
+
+
+            Return the actual content.
+
+
+            Do not write the article.
+
+            Do not explain your reasoning.'
+        - id: f9dcffcb-2771-4f58-9416-e9af9ae4b4ae
+          role: user
+          text: '# Selected Topic
+
+
+            {{#1783477179135.selected_topic#}}
+
+
+            # Primary Keyword
+
+
+            {{#1783477179135.selected_primary_keyword#}}
+
+
+            # Article Angle
+
+
+            {{#1783477179135.selected_angle#}}
+
+
+            # Topic Strategy Report
+
+            Analyze the following topic strategy report and create the outline:
+
+            {{#1783408093453.text#}}
+
+
+
+            # Research Data
+
+            {{#1783407855917.text#}}
+
+
+
+            # Competitor Article Analysis
+
+            {{#1783407247870.Competitor_Article#}}
+
+
+
+            # User Requirements
+
+
+            Keywords:
+
+            {{#1783407247870.Keywords#}}
+
+
+            Topic Direction:
+
+            {{#1783407247870.topic_direction#}}
+
+
+
+            # Additional Requirements
+
+            {{#1783407247870.Additional_Notes#}}'
+        selected: false
+        structured_output:
+          schema:
+            additionalProperties: false
+            properties:
+              cta:
+                type: string
+              faq:
+                items:
+                  type: string
+                type: array
+              meta_description:
+                type: string
+              outline:
+                items:
+                  additionalProperties: false
+                  properties:
+                    heading:
+                      type: string
+                    keywords_to_include:
+                      items:
+                        type: string
+                      type: array
+                    subheadings:
+                      items:
+                        type: string
+                      type: array
+                  required:
+                  - heading
+                  - subheadings
+                  - keywords_to_include
+                  type: object
+                type: array
+              primary_keyword:
+                type: string
+              search_intent:
+                type: string
+              secondary_keywords:
+                items:
+                  type: string
+                type: array
+              title:
+                type: string
+            required:
+            - title
+            - meta_description
+            - primary_keyword
+            - secondary_keywords
+            - search_intent
+            - outline
+            - faq
+            - cta
+            type: object
+        structured_output_enabled: false
+        title: P2 | SEO Outline Agent
+        type: llm
+        vision:
+          enabled: false
+      height: 89
+      id: '1783408775089'
+      position:
+        x: 1420.2839705783886
+        y: 291.09345126326275
+      positionAbsolute:
+        x: 1420.2839705783886
+        y: 291.09345126326275
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        instruction: 'Extract the following fields from the input text.
+
+
+          selected_topic:
+
+          The final recommended topic.
+
+
+          selected_primary_keyword:
+
+          The primary keyword of the selected topic.
+
+
+          selected_angle:
+
+          The content angle of the selected topic.
+
+
+          Return only the extracted values.'
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: Pro/moonshotai/Kimi-K2.5
+          provider: langgenius/siliconflow/siliconflow
+        parameters:
+        - description: Extract the value after SELECTED_TOPIC
+          name: selected_topic
+          required: false
+          type: string
+        - description: Extract the value after SELECTED_PRIMARY_KEYWORD
+          name: selected_primary_keyword
+          required: false
+          type: string
+        - description: Extract the value after SELECTED_ANGLE
+          name: selected_angle
+          required: false
+          type: string
+        query:
+        - '1783408093453'
+        - text
+        reasoning_mode: prompt
+        selected: false
+        title: P1 | Topic Strategy Agent → text
+        type: parameter-extractor
+        vision:
+          enabled: false
+      height: 89
+      id: '1783477179135'
+      position:
+        x: 1071.3227783506816
+        y: 286.10172653804534
+      positionAbsolute:
+        x: 1071.3227783506816
+        y: 286.10172653804534
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        outputs:
+        - value_selector:
+          - '1783408775089'
+          - text
+          value_type: string
+          variable: outline
+        selected: false
+        title: 输出
+        type: end
+      height: 89
+      id: '1783477654527'
+      position:
+        x: 1723.2839705783886
+        y: 291.09345126326275
+      positionAbsolute:
+        x: 1723.2839705783886
+        y: 291.09345126326275
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    viewport:
+      x: 125.40637678379517
+      y: 225.40674351648659
+      zoom: 0.7397819754726149
+  rag_pipeline_variables: []
